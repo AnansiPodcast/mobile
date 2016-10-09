@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import API from '../src/api.js'
+import PodcastRepository from '../src/repository/podcast-repository.js'
 import {
   AsyncStorage,
   ActivityIndicator,
@@ -62,29 +62,8 @@ class PodcastList extends Component {
     );
   }
 
-  componentDidMount() {
-    AsyncStorage.getItem('podcast_list').then((items_str) => {
-
-      const new_items = JSON.parse(items_str)
-
-      if(new_items !== null) {
-        this.updateItemsUI(new_items);
-      } else {
-        this.getItems();
-      }
-
-    }).done();
-  }
-
-  getItems() {
-
-    let items = []
-    API.PodcastList().then((podcasts) => {
-      items = podcasts
-      this.updateItemsUI(items);
-      this.updateItemsDB(items);
-    })
-
+  componentWillMount() {
+    PodcastRepository.all().then((items) => this.updateItemsUI(items))
   }
 
   updateItemsUI(items) {
@@ -92,10 +71,6 @@ class PodcastList extends Component {
       'podcasts': this.state.dataSource.cloneWithRows(items),
       'loaded': true
     })
-  }
-
-  updateItemsDB(items) {
-    AsyncStorage.setItem('podcast_list', JSON.stringify(items))
   }
 
 }

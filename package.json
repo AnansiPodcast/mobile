@@ -7,6 +7,8 @@
   },
   "dependencies": {
     "react": "15.3.2",
-    "react-native": "0.34.1"
+    "react-native": "0.34.1",
+    "react-native-storage": "^0.1.4",
+    "react-native-uuid": "^1.4.8"
   }
 }
